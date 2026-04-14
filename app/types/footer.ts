@@ -3,4 +3,5 @@ export interface FooterLink {
   hoverText?: string;
   url: string;
   icon: string;
+  iconViewBoxSize?: number;
 }

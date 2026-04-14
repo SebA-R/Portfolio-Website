@@ -7,38 +7,44 @@ import * as THREE from "three";
 import { FOOTER_LINKS } from "../../constants";
 import { FooterLink } from "../../types";
 
-// Hook to get responsive values based on viewport width
+// Target visual size (world units) for all mobile icons
+const ICON_TARGET_SIZE = 0.35;
+// Base viewBox reference size — scale is computed relative to this
+const ICON_BASE_VIEWBOX = 256;
+
 const useResponsive = () => {
   const { viewport } = useThree();
   const width = viewport.width;
-  
+
   // Scale everything based on viewport width
   const isMobile = width < 6;
   const isTablet = width >= 6 && width < 10;
-  
+
   // Dynamic spacing that scales with viewport
   let spacing: number;
   let fontSize: number;
   let iconScale: number;
-  
+
   if (isMobile) {
     spacing = Math.max(0.8, width * 0.18);
-    fontSize = 0.15;
-    iconScale = 0.0012;
+    fontSize = Math.max(0.18, width * 0.04);
+    iconScale = ICON_TARGET_SIZE / ICON_BASE_VIEWBOX;
   } else if (isTablet) {
     spacing = Math.max(1.2, width * 0.15);
-    fontSize = 0.18;
-    iconScale = 0.0014;
+    fontSize = 0.22;
+    iconScale = ICON_TARGET_SIZE / ICON_BASE_VIEWBOX;
   } else {
     spacing = Math.min(2, width * 0.12);
-    fontSize = 0.2;
-    iconScale = 0.0015;
+    fontSize = 0.25;
+    iconScale = ICON_TARGET_SIZE / ICON_BASE_VIEWBOX;
   }
-  
+
   return { isMobile, spacing, fontSize, iconScale };
 };
 
-const FooterLinkItem = ({ link, isMobile, fontSize, iconScale }: { link: FooterLink; isMobile: boolean; fontSize: number; iconScale: number }) => {
+const FooterLinkItem = ({ link, isMobile, fontSize, iconScale }: { link: FooterLink; isMobile: boolean; fontSize: number; iconScale: number; }) => {
+  // Normalize icon scale so all icons appear the same visual size regardless of viewBox
+  const normalizedIconScale = iconScale * (ICON_BASE_VIEWBOX / (link.iconViewBoxSize ?? ICON_BASE_VIEWBOX));
   const textRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const onPointerOver = () => setHovered(true);
@@ -108,7 +114,7 @@ const FooterLinkItem = ({ link, isMobile, fontSize, iconScale }: { link: FooterL
   useCursor(hovered);
 
   if (isMobile) {
-    return <Svg onClick={onClick} scale={iconScale} position={[0.1, 0.2, 0]} src={link.icon} />;
+    return <Svg onClick={onClick} scale={normalizedIconScale} position={[0, 0, 0]} src={link.icon} />;
   }
 
   return (
