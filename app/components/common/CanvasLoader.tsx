@@ -68,7 +68,7 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
   }, [progress]);
 
   return (
-    <div className="h-[100dvh] wrapper relative">
+    <main role="main" aria-label="Portfolio" className="h-[100dvh] wrapper relative">
       <div className="h-[100dvh] relative" style={{ overflow: 'hidden' }}>
         <div style={{
           position: 'absolute',
@@ -83,6 +83,8 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
           muted
           loop
           playsInline
+          aria-hidden="true"
+          preload="auto"
           style={{
             position: 'absolute',
             top: 0,
@@ -96,7 +98,7 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
           <source src="stitched6-h265.mp4" type='video/mp4; codecs="hvc1"' />
           <source src="stitched6-compressed.mp4" type="video/mp4" />
         </video>
-        <Canvas className="base-canvas"
+        <Canvas className="base-canvas" aria-hidden="true"
           shadows
           style={canvasStyle}
           gl={{ alpha: true }}
@@ -117,7 +119,7 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
       </div>
       <ThemeSwitcher />
       <ScrollHint />
-    </div>
+    </main>
   );
 };
 

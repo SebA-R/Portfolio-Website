@@ -17,6 +17,12 @@ const vercettiFont = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sebastian.wiki"),
   title: "Sebastian Arellano-Rubach",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Sebastian Arellano-Rubach",
+  },
   description: "AI Researcher & Data Engineer. Co-author of 4 peer-reviewed papers with 250+ citations. 1st Place Hack Canada 2026. UWaterloo + Laurier Double Degree.",
   keywords: "Sebastian Arellano-Rubach, AI Researcher, Data Engineer, LLMs, Machine Learning, Chemistry Robotics, UWaterloo, Hackathon, Full Stack Developer",
   authors: [{ name: "Sebastian Arellano-Rubach" }],
@@ -71,6 +77,31 @@ export default function RootLayout({
       <body
         className={`${soriaFont.variable} ${vercettiFont.variable} font-sans antialiased`}
       >
+        <link rel="preconnect" href="https://us.i.posthog.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Sebastian Arellano-Rubach",
+              url: "https://sebastian.wiki",
+              jobTitle: "AI Researcher & Data Engineer",
+              alumniOf: [
+                { "@type": "CollegeOrUniversity", name: "University of Waterloo" },
+                { "@type": "CollegeOrUniversity", name: "Wilfrid Laurier University" },
+              ],
+              knowsAbout: ["Artificial Intelligence", "Machine Learning", "LLMs", "Robotics", "Data Engineering"],
+              award: "1st Place Hack Canada 2026",
+              sameAs: [
+                "https://github.com/SebA-R",
+                "https://devpost.com/cookiekingcrusher",
+              ],
+            }),
+          }}
+        />
         <PHProvider>
           {children}
         </PHProvider>
