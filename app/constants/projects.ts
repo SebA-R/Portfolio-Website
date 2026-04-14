@@ -11,7 +11,7 @@ export const PROJECTS: Project[] = [
     title: 'CLAIRify',
     date: 'Mar 2023',
     subtext: 'Verifier-assisted iterative prompting framework for chemistry DSL generation. Published in arXiv with 250+ citations. Presented to 150+ attendees at the Acceleration Consortium.',
-    url: 'https://arxiv.org/abs/2303.14100',
+    url: 'https://ac-rad.github.io/clairify',
   },
   {
     title: 'FindMD',
