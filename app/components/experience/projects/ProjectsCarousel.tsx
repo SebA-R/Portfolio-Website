@@ -26,22 +26,29 @@ const ProjectsCarousel = () => {
   };
 
   const tiles = useMemo(() => {
-    const fov = Math.PI;
+    const numCols = 3;
+    const rowSpacing = 3;
+    const fov = Math.PI * 0.75;
     const distance = 13;
-    const count = PROJECTS.length;
+    const startAngle = (Math.PI - fov) / 2;
 
     return PROJECTS.map((project, i) => {
-      const angle = (fov / count) * i;
+      const col = i % numCols;
+      const row = Math.floor(i / numCols);
+      const angle = numCols > 1
+        ? startAngle + (fov / (numCols - 1)) * col
+        : Math.PI / 2;
       const z = -distance * Math.sin(angle);
       const x = -distance * Math.cos(angle);
       const rotY = Math.PI / 2 - angle;
+      const y = 1 - row * rowSpacing;
 
       return (
         <ProjectTile
           key={i}
           project={project}
           index={i}
-          position={[x, 1, z]}
+          position={[x, y, z]}
           rotation={[0, rotY, 0]}
           activeId={activeId}
           onClick={() => onClick(i)}

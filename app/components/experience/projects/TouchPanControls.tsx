@@ -11,31 +11,24 @@ export const TouchPanControls = () => {
   const touchStartRef = useRef({ x: 0, y: 0 })
   const cameraRotationRef = useRef({ x: 0, y: 0 })
   const targetRotationRef = useRef({ x: 0, y: 0 })
+  const cameraStartYRef = useRef(0)
+  const targetCameraYRef = useRef(0)
   const [isDragging, setIsDragging] = useState(false)
 
   // Set initial camera and target rotation values
   useEffect(() => {
-    cameraRotationRef.current = {
-      x: camera.rotation.y,
-      y: camera.rotation.x
-    }
-    targetRotationRef.current = {
-      x: camera.rotation.y,
-      y: camera.rotation.x
-    }
+    cameraRotationRef.current = { x: camera.rotation.y, y: camera.rotation.x }
+    targetRotationRef.current = { x: camera.rotation.y, y: camera.rotation.x }
+    targetCameraYRef.current = camera.position.y
   }, [camera])
 
   // Animation loop for smooth camera movement
   useFrame(() => {
     if (!camera) return
 
-    // Apply smooth damping to camera rotation
     const dampingFactor = 0.05
-
     camera.rotation.y += (targetRotationRef.current.x - camera.rotation.y) * dampingFactor
-    camera.rotation.x += (targetRotationRef.current.y - camera.rotation.x) * dampingFactor
-
-    // Update camera matrix
+    camera.position.y += (targetCameraYRef.current - camera.position.y) * dampingFactor
     camera.updateProjectionMatrix()
   })
 
@@ -44,32 +37,28 @@ export const TouchPanControls = () => {
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 1) {
         setIsDragging(true)
-        touchStartRef.current = {
-          x: e.touches[0].clientX,
-          y: e.touches[0].clientY
-        }
-        // Remember current rotation as starting point
-        cameraRotationRef.current = {
-          x: targetRotationRef.current.x,
-          y: targetRotationRef.current.y
-        }
+        touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+        cameraRotationRef.current = { x: targetRotationRef.current.x, y: targetRotationRef.current.y }
+        cameraStartYRef.current = targetCameraYRef.current
       }
     }
 
     const handleTouchMove = (e: TouchEvent) => {
       if (!isDragging || e.touches.length !== 1) return
 
-      // Calculate touch movement delta
       const touchX = e.touches[0].clientX
+      const touchY = e.touches[0].clientY
       const deltaX = touchX - touchStartRef.current.x
+      const deltaY = touchY - touchStartRef.current.y
 
-      // Update target rotation with sensitivity adjustment
-      const sensitivity = 0.005
-      const newRotationY = cameraRotationRef.current.x + deltaX * sensitivity
-
-      // Apply rotation limits to prevent over-rotation
+      // Horizontal → rotation.y
       const maxRotation = Math.PI / 3
+      const newRotationY = cameraRotationRef.current.x + deltaX * 0.005
       targetRotationRef.current.x = Math.max(Math.min(newRotationY, maxRotation), -maxRotation)
+
+      // Vertical → camera.position.y (navigate rows); numRows=3, rowSpacing=3
+      const newY = cameraStartYRef.current + deltaY * 0.04
+      targetCameraYRef.current = Math.max(-47, Math.min(-33, newY))
     }
 
     const handleTouchEnd = () => {
