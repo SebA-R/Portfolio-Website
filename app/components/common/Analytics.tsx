@@ -11,6 +11,7 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
     posthog.init(key, {
       api_host: 'https://t.sebastian.wiki',
       ui_host: 'https://us.posthog.com',
+      person_profiles: 'identified_only',
       capture_pageview: true,
       capture_pageleave: true,
       capture_exceptions: true,
