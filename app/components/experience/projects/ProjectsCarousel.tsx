@@ -26,18 +26,35 @@ const ProjectsCarousel = () => {
   };
 
   const tiles = useMemo(() => {
-    const numCols = 3;
+    const maxCols = 5;
     const rowSpacing = 3;
-    const fov = Math.PI * 0.35;
+    const tileAngularSpacing = Math.PI * 0.15; // fixed spacing between adjacent tiles
     const distance = 13;
-    const startAngle = (Math.PI - fov) / 2;
+
+    const total = PROJECTS.length;
+    const remainder = total % maxCols; // tiles in the partial (top) row
 
     return PROJECTS.map((project, i) => {
-      const col = i % numCols;
-      const row = Math.floor(i / numCols);
-      const angle = numCols > 1
-        ? startAngle + (fov / (numCols - 1)) * col
-        : Math.PI / 2;
+      let row: number, col: number, tilesInRow: number;
+
+      if (remainder > 0 && i < remainder) {
+        // Partial row sits at the top
+        row = 0;
+        col = i;
+        tilesInRow = remainder;
+      } else {
+        // Full rows fill from below the partial row
+        const j = remainder > 0 ? i - remainder : i;
+        row = (remainder > 0 ? 1 : 0) + Math.floor(j / maxCols);
+        col = j % maxCols;
+        tilesInRow = Math.min(maxCols, total - (remainder > 0 ? remainder : 0) - Math.floor(j / maxCols) * maxCols);
+      }
+
+      // Arc for this row, centered on the same axis
+      const rowFov = (tilesInRow - 1) * tileAngularSpacing;
+      const startAngle = (Math.PI - rowFov) / 2;
+      const angle = tilesInRow === 1 ? Math.PI / 2 : startAngle + tileAngularSpacing * col;
+
       const z = -distance * Math.sin(angle);
       const x = -distance * Math.cos(angle);
       const rotY = Math.PI / 2 - angle;
