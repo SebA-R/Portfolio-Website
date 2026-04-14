@@ -31,8 +31,10 @@ const ProjectsCarousel = () => {
     const tileAngularSpacing = Math.PI * 0.15; // fixed spacing between adjacent tiles
     const distance = 13;
 
+    const BOTTOM_Y = -2; // hard floor — no row ever goes below this
     const total = PROJECTS.length;
     const remainder = total % maxCols; // tiles in the partial (top) row
+    const numRows = Math.ceil(total / maxCols);
 
     return PROJECTS.map((project, i) => {
       let row: number, col: number, tilesInRow: number;
@@ -58,7 +60,8 @@ const ProjectsCarousel = () => {
       const z = -distance * Math.sin(angle);
       const x = -distance * Math.cos(angle);
       const rotY = Math.PI / 2 - angle;
-      const y = 1 + rowSpacing - row * rowSpacing;
+      // Bottom row anchored at BOTTOM_Y; higher rows stack upward
+      const y = BOTTOM_Y + (numRows - 1 - row) * rowSpacing;
 
       return (
         <ProjectTile
