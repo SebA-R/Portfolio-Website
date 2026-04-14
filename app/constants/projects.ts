@@ -55,4 +55,29 @@ export const PROJECTS: Project[] = [
     subtext: 'YHack Spring 2026. AI virtual try-on with 24fps frame-by-frame garment replacement using segmentation, captioning, and generative synthesis from 30+ retail stores.',
     url: 'https://devpost.com/software/fashionai-ytiz05',
   },
+  {
+    title: 'MuSage',
+    date: 'Feb 2026',
+    subtext: 'Hack@Brown 2026. Real-time biometric music generation: live camera feed extracts pulse and breathing rate via SmartSpectra SDK, converted to MIDI in a closed C++17 feedback loop.',
+  },
+  {
+    title: 'Lumière',
+    date: 'Jan 2025',
+    subtext: 'ConUHacks X. AI concierge delivering personalized luxury travel and experience recommendations via LLM-powered orchestration. MongoDB, Supabase, Gemini API, Crawl4AI.',
+  },
+  {
+    title: 'N.O.M.A.D.',
+    date: 'Nov 2024',
+    subtext: 'UTRA Hacks 2024. Autonomous agricultural rover with 4-DOF robotic arm implementing inverse kinematics for soil sample collection and on-site moisture analysis; deployed at UofT Schools garden.',
+  },
+  {
+    title: 'ChemSkills',
+    date: 'Apr 2023',
+    subtext: 'Hack the Ridge 2023. Chemistry education platform with algorithmic question generation spanning nomenclature to stoichiometry, with teacher/student classroom management workflows.',
+  },
+  {
+    title: 'Portal Lens',
+    date: 'Mar 2026',
+    subtext: 'YHack Spring 2026. AR portal using 6-DOF world tracking and proximity detection to transition users into a 360° immersive environment; built from scratch in Snap Lens Studio.',
+  },
 ];

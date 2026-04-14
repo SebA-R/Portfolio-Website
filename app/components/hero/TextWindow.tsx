@@ -57,7 +57,7 @@ const TextWindow = () => {
           fontSize={0.8}
           position={[0, 0, -0.6]}
           rotation={[0, -Math.PI / 2,  -Math.PI / 2]}>
-          HACKATHON CHAMPION
+          20+ HACKATHONS
         </Text>
       </group>
 
