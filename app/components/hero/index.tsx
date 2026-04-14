@@ -3,6 +3,7 @@
 import { Text, useProgress, useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import gsap from "gsap";
+import posthog from "posthog-js";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import StarsContainer from "../models/Stars";
@@ -26,6 +27,7 @@ const Hero = () => {
     if (progress === 100 && groupRef.current) {
       gsap.fromTo(groupRef.current.position, { y: -10 }, { y: 0, duration: 3 });
       gsap.to(loadProgressRef, { current: 1, duration: 1.5, ease: 'power3.out', delay: 0.5 });
+      posthog.capture('site_loaded');
     }
   }, [progress]);
 

@@ -1,6 +1,7 @@
 import { ScrollControls } from "@react-three/drei";
 import { usePortalStore, useScrollStore } from "@stores";
-import { useEffect } from "react";
+import posthog from "posthog-js";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Memory } from "../../models/Memory";
 import Timeline from "./Timeline";
@@ -8,6 +9,7 @@ import Timeline from "./Timeline";
 const Work = () => {
   const isActive = usePortalStore((state) => state.activePortalId === 'work');
   const { scrollProgress, setScrollProgress } = useScrollStore();
+  const timelineCompletedFiredRef = useRef(false);
 
   const handleScroll = (event: Event) => {
     const target = event.target as HTMLElement;
@@ -15,6 +17,10 @@ const Work = () => {
     const scrollHeight = target.scrollHeight - target.clientHeight;
     const progress = Math.min(Math.max(scrollTop / scrollHeight, 0), 1);
     setScrollProgress(progress);
+    if (progress >= 1 && !timelineCompletedFiredRef.current) {
+      timelineCompletedFiredRef.current = true;
+      posthog.capture('work_timeline_completed');
+    }
   }
 
   // Hack: If the portal is active, add the scroll event listener to the scroll
@@ -40,6 +46,7 @@ const Work = () => {
         scrollWrapper.style.zIndex = '-1';
         originalScrollWrapper.style.zIndex = '1';
       }
+      timelineCompletedFiredRef.current = false;
     }
   }, [isActive]);
 

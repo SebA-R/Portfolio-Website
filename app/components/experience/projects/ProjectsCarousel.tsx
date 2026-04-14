@@ -1,3 +1,4 @@
+import posthog from "posthog-js";
 import { useEffect, useMemo, useState } from "react";
 import { isMobile } from "react-device-detect";
 import ProjectTile from "./ProjectTile";
@@ -15,7 +16,13 @@ const ProjectsCarousel = () => {
 
   const onClick = (id: number) => {
     if (!isMobile) return;
+    const isExpanding = id !== activeId;
     setActiveId(id === activeId ? null : id);
+    posthog.capture('project_mobile_selected', {
+      project_index: id,
+      project_title: PROJECTS[id]?.title,
+      is_expanded: isExpanding,
+    });
   };
 
   const tiles = useMemo(() => {

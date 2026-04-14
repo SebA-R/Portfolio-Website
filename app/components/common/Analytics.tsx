@@ -9,7 +9,7 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
     const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
     if (!key) return;
     posthog.init(key, {
-      api_host: '/ingest',
+      api_host: 'https://t.sebastian.wiki',
       ui_host: 'https://us.posthog.com',
       capture_pageview: true,
       capture_pageleave: true,

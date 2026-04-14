@@ -1,0 +1,7 @@
+name = "posthog-proxy"
+main = "index.ts"
+compatibility_date = "2025-01-01"
+
+routes = [
+  { pattern = "t.sebastian.wiki/*", zone_name = "sebastian.wiki" }
+]
