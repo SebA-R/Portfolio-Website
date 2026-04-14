@@ -28,7 +28,7 @@ const ProjectsCarousel = () => {
   const tiles = useMemo(() => {
     const numCols = 3;
     const rowSpacing = 3;
-    const fov = Math.PI * 0.75;
+    const fov = Math.PI * 0.35;
     const distance = 13;
     const startAngle = (Math.PI - fov) / 2;
 
