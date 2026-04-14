@@ -5,6 +5,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 
+import { useDeviceOrientation } from "@/app/hooks/useDeviceOrientation";
 import { usePortalStore, useScrollStore } from "@stores";
 
 const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) => {
@@ -12,6 +13,7 @@ const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) 
   const data = useScroll();
   const isActive = usePortalStore((state) => !!state.activePortalId);
   const setScrollProgress = useScrollStore((state) => state.setScrollProgress);
+  const orientation = useDeviceOrientation();
 
   useFrame((state, delta) => {
     if (data) {
@@ -27,9 +29,18 @@ const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) 
         setScrollProgress(data.range(0, 1));
       }
 
-      // Move camera slightly on mouse movement.
-      if (!isMobile && !isActive) {
-        camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 90, 0.05);
+      if (!isActive) {
+        if (isMobile) {
+          // Tilt left/right (gamma) → subtle camera pan, same feel as mouse on desktop
+          camera.rotation.y = THREE.MathUtils.lerp(
+            camera.rotation.y,
+            -(orientation.current.gamma / 90) * (Math.PI / 20),
+            0.05,
+          );
+        } else {
+          // Move camera slightly on mouse movement.
+          camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 90, 0.05);
+        }
       }
     }
   });
