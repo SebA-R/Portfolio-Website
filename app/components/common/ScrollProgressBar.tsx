@@ -41,6 +41,7 @@ const ScrollProgressBar = () => {
           width: '100%',
           height: '0%',
           background: 'var(--scrollbarColor)',
+          borderRadius: '0 0 4px 4px',
         }}
       />
     </div>
