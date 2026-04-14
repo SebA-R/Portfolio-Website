@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import localFont from 'next/font/local';
+import { PHProvider } from "./components/common/Analytics";
 import "./globals.css";
 
 const soriaFont = localFont({
@@ -70,7 +71,9 @@ export default function RootLayout({
       <body
         className={`${soriaFont.variable} ${vercettiFont.variable} font-sans antialiased`}
       >
-        {children}
+        <PHProvider>
+          {children}
+        </PHProvider>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-7WD4HM3XRE"
           strategy="afterInteractive"
