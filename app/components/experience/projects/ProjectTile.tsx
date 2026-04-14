@@ -111,8 +111,9 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
           anchorX="left"
           anchorY="bottom"
           maxWidth={4}
+          whiteSpace="nowrap"
           fontSize={0.8}>
-          {project.title}
+          {project.title.length > 14 ? project.title.slice(0, 13) + '…' : project.title}
         </Text>
         <group position={[-1.25, 1.4, 0.01]}>
           <mesh>
