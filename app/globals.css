@@ -55,7 +55,7 @@ body {
   background: var(--scrollbarBackground);
 }
 ::-webkit-scrollbar-thumb {
-  border-bottom: 100vh solid var(--scrollbarColor);
+  border-top: 100vh solid var(--scrollbarColor);
 }
 
 .close {
