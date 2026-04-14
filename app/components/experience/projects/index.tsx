@@ -30,8 +30,7 @@ const Projects = () => {
     if (isActive) {
       if (!isMobile) {
         camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 4, 0.03);
-        // pointer.y navigates rows vertically; numRows=3, rowSpacing=3 → range ~6 units
-        camera.position.y = THREE.MathUtils.damp(camera.position.y, -39 - state.pointer.y * 6, 5, delta);
+        camera.position.z = THREE.MathUtils.damp(camera.position.z, 11.5 - state.pointer.y, 7, delta);
       }
     }
   });
