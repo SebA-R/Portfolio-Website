@@ -9,6 +9,7 @@ import { isMobile } from "react-device-detect";
 
 import Preloader from "./Preloader";
 import ProgressLoader from "./ProgressLoader";
+import ScrollProgressBar from "./ScrollProgressBar";
 import { ScrollHint } from "./ScrollHint";
 import ThemeSwitcher from "./ThemeSwitcher";
 
@@ -119,6 +120,7 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
       </div>
       <ThemeSwitcher />
       <ScrollHint />
+      <ScrollProgressBar />
     </main>
   );
 };

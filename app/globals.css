@@ -44,19 +44,14 @@ body {
 
 :root {
   --scrollbarColor: #38bdf8;
-  --scrollbarBackground: rgba(0, 0, 0, 0);
 }
 
+/* Hide the native scrollbar — replaced by ScrollProgressBar component */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 0;
 }
-
-::-webkit-scrollbar-track {
-  background: var(--scrollbarBackground);
-}
-::-webkit-scrollbar-thumb {
-  background: transparent;
-  border-top: 100vh solid var(--scrollbarColor);
+* {
+  scrollbar-width: none;
 }
 
 .close {
