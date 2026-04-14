@@ -52,22 +52,22 @@ const Hero = () => {
         <mesh ref={rectRef} position={[0, 0, -0.001]} scale={[1, MIN_SCALE, 1]}>
           <planeGeometry args={[rectWidth, rectHeight]} />
           <meshBasicMaterial color="#000000" transparent opacity={0.65} depthWrite={false} />
+          <Text
+            position={[0, 0, 0.002]}
+            font="./soria-font.ttf"
+            fontSize={fontSize}
+            maxWidth={maxWidth}
+            color="white"
+            anchorX="center"
+            anchorY="middle"
+            onSync={(troika: any) => {
+              const b = troika?.textRenderInfo?.blockBounds;
+              if (b) setTextBounds({ w: b[2] - b[0], h: b[3] - b[1] });
+            }}
+          >
+            I'm Sebastian Arellano-Rubach
+          </Text>
         </mesh>
-        <Text
-          position={[0, 0, 0]}
-          font="./soria-font.ttf"
-          fontSize={fontSize}
-          maxWidth={maxWidth}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-          onSync={(troika: any) => {
-            const b = troika?.textRenderInfo?.blockBounds;
-            if (b) setTextBounds({ w: b[2] - b[0], h: b[3] - b[1] });
-          }}
-        >
-          I'm Sebastian Arellano-Rubach
-        </Text>
       </group>
       <StarsContainer />
       <group position={[0, -25, 5.69]}>
