@@ -3,6 +3,7 @@ import { Edges, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-th
 import { useFrame, useThree } from '@react-three/fiber';
 import { usePortalStore } from '@stores';
 import gsap from "gsap";
+import posthog from 'posthog-js';
 import { useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 import * as THREE from 'three';
@@ -64,6 +65,7 @@ const GridTile = (props: GridTileProps) => {
   const portalInto = (e: React.MouseEvent) => {
     if (isActive || activePortalId) return;
     e.stopPropagation();
+    posthog.capture('section_portal_entered', { section_id: id });
     setActivePortal(id);
     document.body.style.cursor = 'auto';
     const div = document.createElement('div');
@@ -95,6 +97,7 @@ const GridTile = (props: GridTileProps) => {
 
   const exitPortal = (force = false) => {
     if (!force && !activePortalId) return;
+    posthog.capture('section_portal_exited', { section_id: activePortalId });
     setActivePortal(null)
 
     gsap.to(camera.position, {

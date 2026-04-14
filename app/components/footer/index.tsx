@@ -1,6 +1,7 @@
 import { Svg, Text, useCursor, useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import gsap from "gsap";
+import posthog from "posthog-js";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { FOOTER_LINKS } from "../../constants";
@@ -42,7 +43,10 @@ const FooterLinkItem = ({ link, isMobile, fontSize, iconScale }: { link: FooterL
   const [hovered, setHovered] = useState(false);
   const onPointerOver = () => setHovered(true);
   const onPointerOut = () => setHovered(false);
-  const onClick = () => window.open(link.url, '_blank');
+  const onClick = () => {
+    posthog.capture('footer_link_clicked', { link_name: link.name, link_url: link.url });
+    window.open(link.url, '_blank');
+  };
   const onPointerMove = (e: MouseEvent) => {
     if (isMobile) return;
     const hoverDiv = document.getElementById(`footer-link-${link.name}`);

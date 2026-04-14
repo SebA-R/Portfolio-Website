@@ -1,6 +1,7 @@
 import { Edges, Text, TextProps } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import gsap from "gsap";
+import posthog from "posthog-js";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
@@ -84,6 +85,7 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
     if (!project.url) return;
+    posthog.capture('project_link_clicked', { project_title: project.title, project_url: project.url });
     const button = e.eventObject;
     gsap.to(button.position, { z: 0, duration: 0.1 })
       .then(() => gsap.to(button.position, { z: 0.3, duration: 0.3 }));
@@ -95,7 +97,7 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
       position={position}
       rotation={rotation}
       onClick={onClick}
-      onPointerOver={() => !isMobile && isProjectSectionActive && setHovered(true)}
+      onPointerOver={() => { if (!isMobile && isProjectSectionActive) { posthog.capture('project_viewed', { project_title: project.title, project_index: index }); setHovered(true); } }}
       onPointerOut={() => !isMobile && isProjectSectionActive && setHovered(false)}>
       <group ref={projectRef}>
         <mesh>

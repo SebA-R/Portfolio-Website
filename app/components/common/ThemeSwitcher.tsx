@@ -2,6 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { usePortalStore, useThemeStore } from "@stores";
 import gsap from "gsap";
 import Image from 'next/image';
+import posthog from "posthog-js";
 import { useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 
@@ -10,7 +11,10 @@ const ThemeSwitcher = () => {
   const { nextTheme, theme } = useThemeStore();
   const isActive = usePortalStore((state) => state.activePortalId);
   const [positionClass, setPositionClass] = useState<string>('');
-  const toggleTheme = () => nextTheme();
+  const toggleTheme = () => {
+    nextTheme();
+    posthog.capture('theme_changed', { previous_theme: theme.type });
+  };
 
   useGSAP(() => {
     gsap.to(themeSwitcherRef.current, {
