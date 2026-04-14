@@ -1,0 +1,21 @@
+# v0 runtime files
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+
+# Dependencies
+node_modules
+
+# Build output
+.next/
+out/
+
+# Environment
+.env*.local
+.env
+
+# OS
+.DS_Store
+
+# Wrangler
+.wrangler/

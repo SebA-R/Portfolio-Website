@@ -1,0 +1,39 @@
+# Cloudflare Pages cache headers
+
+# Immutable static assets (hashed filenames - cache forever)
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 3D models - large, rarely change
+/models/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Video files - large, rarely change
+/*.webm
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/*.mp4
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Fonts
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+/*.ttf
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images
+/images/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/icons/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# HTML pages - always revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Sitemap and robots
+/sitemap.xml
+  Cache-Control: public, max-age=86400
+/robots.txt
+  Cache-Control: public, max-age=86400
