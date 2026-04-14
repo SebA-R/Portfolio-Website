@@ -1,6 +1,7 @@
 'use client';
 
 import { useScroll } from "@react-three/drei";
+import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
@@ -14,6 +15,27 @@ const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) 
   const isActive = usePortalStore((state) => !!state.activePortalId);
   const setScrollProgress = useScrollStore((state) => state.setScrollProgress);
   const orientation = useDeviceOrientation();
+  // Normalised -1..1 touch x position; 0 when no finger is down
+  const touchX = useRef(0);
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const onMove = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) touchX.current = (t.clientX / window.innerWidth) * 2 - 1;
+    };
+    const onEnd = () => { touchX.current = 0; };
+
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchend', onEnd);
+    window.addEventListener('touchcancel', onEnd);
+    return () => {
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onEnd);
+      window.removeEventListener('touchcancel', onEnd);
+    };
+  }, []);
 
   useFrame((state, delta) => {
     if (data) {
@@ -31,14 +53,10 @@ const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) 
 
       if (!isActive) {
         if (isMobile) {
-          // Tilt left/right (gamma) → subtle camera pan, same feel as mouse on desktop
-          camera.rotation.y = THREE.MathUtils.lerp(
-            camera.rotation.y,
-            -(orientation.current.gamma / 90) * (Math.PI / 10),
-            0.07,
-          );
+          const gyro  = -(orientation.current.gamma / 90) * (Math.PI / 10);
+          const touch = -(touchX.current * Math.PI) / 90;
+          camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, gyro + touch, 0.07);
         } else {
-          // Move camera slightly on mouse movement.
           camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 90, 0.05);
         }
       }
