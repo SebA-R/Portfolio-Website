@@ -1,0 +1,32 @@
+[
+  {
+    "event": "footer_link_clicked",
+    "description": "User clicks a social/contact link in the 3D footer (LinkedIn, GitHub, Scholar, Email)",
+    "file": "app/components/footer/index.tsx"
+  },
+  {
+    "event": "section_portal_entered",
+    "description": "User enters a 3D portal section (Work or Projects) by clicking a grid tile",
+    "file": "app/components/experience/GridTile.tsx"
+  },
+  {
+    "event": "section_portal_exited",
+    "description": "User exits the active portal section by pressing Escape or clicking the close button",
+    "file": "app/components/experience/GridTile.tsx"
+  },
+  {
+    "event": "project_viewed",
+    "description": "User hovers or taps a project tile to expand its details",
+    "file": "app/components/experience/projects/ProjectTile.tsx"
+  },
+  {
+    "event": "project_link_clicked",
+    "description": "User clicks the VIEW button to open a project URL in a new tab",
+    "file": "app/components/experience/projects/ProjectTile.tsx"
+  },
+  {
+    "event": "theme_changed",
+    "description": "User toggles the site theme using the theme switcher",
+    "file": "app/components/common/ThemeSwitcher.tsx"
+  }
+]

@@ -19,3 +19,4 @@ out/
 
 # Wrangler
 .wrangler/
+.env.local

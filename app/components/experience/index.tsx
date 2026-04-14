@@ -27,7 +27,7 @@ const Experience = () => {
     <Text key={i} {...FONT_PROPS} position={[i * diff, 2, 1]}>{char}</Text>
   )), [diff]);
 
-  useFrame((sate, delta) => {
+  useFrame((_, delta) => {
     const d = data.range(0.8, 0.2);
     const e = data.range(0.7, 0.2);
 
