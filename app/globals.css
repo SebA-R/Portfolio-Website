@@ -55,6 +55,7 @@ body {
   background: var(--scrollbarBackground);
 }
 ::-webkit-scrollbar-thumb {
+  background: transparent;
   border-top: 100vh solid var(--scrollbarColor);
 }
 
