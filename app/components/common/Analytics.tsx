@@ -16,6 +16,10 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
       defaults: '2026-01-30',
       session_recording: {
         maskAllInputs: false,
+        captureCanvas: {
+          recordCanvas: true,
+          canvasFps: 4,
+        },
       },
       loaded: (ph) => {
         if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
