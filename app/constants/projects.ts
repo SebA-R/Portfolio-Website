@@ -58,7 +58,7 @@ export const PROJECTS: Project[] = [
   {
     title: 'MuSage',
     date: 'Feb 2026',
-    subtext: 'Hack@Brown 2026. Real-time biometric music generation: live camera feed extracts pulse and breathing rate via SmartSpectra SDK, converted to MIDI in a closed C++17 feedback loop.',
+    subtext: 'Hack@Brown 2026. Real-time biometric music generation: live camera feed extracts pulse and breathing rate via PreSage, converted to MIDI in a closed C++17 feedback loop.',
     url: 'https://devpost.com/software/musage',
   },
   {
