@@ -58,7 +58,7 @@ const ProjectsCarousel = () => {
       const z = -distance * Math.sin(angle);
       const x = -distance * Math.cos(angle);
       const rotY = Math.PI / 2 - angle;
-      const y = 1 - row * rowSpacing;
+      const y = 1 + rowSpacing - row * rowSpacing;
 
       return (
         <ProjectTile
