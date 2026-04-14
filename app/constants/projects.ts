@@ -10,8 +10,26 @@ export const PROJECTS: Project[] = [
   {
     title: 'CLAIRify',
     date: 'Mar 2023',
-    subtext: 'Verifier-assisted iterative prompting framework for chemistry DSL generation. Published in arXiv with 250+ citations. Presented to 150+ attendees at the Acceleration Consortium.',
+    subtext: 'Verifier-assisted iterative prompting framework for chemistry DSL generation. arXiv:2303.14100. 250+ citations. Presented to 150+ attendees at the Acceleration Consortium.',
     url: 'https://ac-rad.github.io/clairify',
+  },
+  {
+    title: 'LLMs for Chemistry Robotics',
+    date: 'Oct 2023',
+    subtext: 'Autonomous Robots, Springer (vol. 47, no. 8). Full-stack interface for instruction-guided task programming of chemistry lab robots via LLMs. Flask, Flask-SocketIO, OpenAI SDK.',
+    url: 'https://scholar.google.com/citations?user=ocwc6XgAAAAJ',
+  },
+  {
+    title: 'DELFI',
+    date: '2024',
+    subtext: 'Chemical Science, RSC. Computer oracle for recommending density functional theory methods for excited states calculations. Co-authored with Avagliano, Skreta, Aspuru-Guzik.',
+    url: 'https://scholar.google.com/citations?user=ocwc6XgAAAAJ',
+  },
+  {
+    title: 'Chemspyd',
+    date: '2024',
+    subtext: 'Digital Discovery, RSC. Open-source Python interface for Chemspeed robotic chemistry and materials platforms. Co-authored with Seifrid, Strieth-Kalthoff, Aspuru-Guzik et al.',
+    url: 'https://scholar.google.com/citations?user=ocwc6XgAAAAJ',
   },
   {
     title: 'FindMD',
