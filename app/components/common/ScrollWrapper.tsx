@@ -54,7 +54,7 @@ const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) 
       if (!isActive) {
         if (isMobile) {
           const gyro  = -(orientation.current.gamma / 90) * (Math.PI / 10);
-          const touch = -(touchX.current * Math.PI) / 90;
+          const touch = (touchX.current * Math.PI) / 90;
           camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, gyro + touch, 0.07);
         } else {
           camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 90, 0.05);
