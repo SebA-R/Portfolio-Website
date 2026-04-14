@@ -18,7 +18,7 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
         maskAllInputs: false,
         captureCanvas: {
           recordCanvas: true,
-          canvasFps: 2,
+          canvasFps: 4,
           canvasQuality: 'low',
         },
       },
