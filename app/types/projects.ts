@@ -3,4 +3,5 @@ export interface Project {
   date: string;
   subtext: string;
   url?: string;
+  favourite?: boolean;
 }

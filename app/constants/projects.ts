@@ -6,12 +6,14 @@ export const PROJECTS: Project[] = [
     date: 'Mar 2026',
     subtext: '1st Place Overall, Hack Canada 2026. Real-time person detection using five synchronized LD2450 mmWave radar modules with FFT + sensor fusion, visualized as AR confidence heatmaps on WebXR headsets.',
     url: 'https://devpost.com/software/wyfyre',
+    favourite: true,
   },
   {
     title: 'CLAIRify',
     date: 'Mar 2023',
     subtext: 'Verifier-assisted iterative prompting framework for chemistry DSL generation. arXiv:2303.14100. 250+ citations. Presented to 150+ attendees at the Acceleration Consortium.',
     url: 'https://ac-rad.github.io/clairify',
+    favourite: true,
   },
   {
     title: 'LLMs for Chemistry Robotics',
@@ -42,12 +44,14 @@ export const PROJECTS: Project[] = [
     date: 'Feb 2025',
     subtext: 'Post-production adaptive product placement pipeline using SAM3 segmentation and Wan2.1-VACE diffusion for branded object replacement in video without reshooting.',
     url: 'https://devpost.com/software/nexhacks-k016op',
+    favourite: true,
   },
   {
     title: 'Rewrite VR',
     date: 'Feb 2026',
     subtext: 'TreeHacks 2026 (Stanford). AI platform converting prompts into explorable VR worlds using Hunyuan WorldPlay on 4xH200 GPUs, optimized from 1fps to 12fps.',
     url: 'https://devpost.com/software/rewrite-2snpat',
+    favourite: true,
   },
   {
     title: 'ParkinSense',

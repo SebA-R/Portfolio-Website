@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Ribbon left -->
+  <polygon points="196,20 256,20 256,200 196,200" fill="#f44771" stroke="#222" stroke-width="16" stroke-linejoin="round"/>
+  <!-- Ribbon right -->
+  <polygon points="256,20 316,20 316,200 256,200" fill="#e5325a" stroke="#222" stroke-width="16" stroke-linejoin="round"/>
+  <!-- Ribbon left notch -->
+  <polygon points="196,200 256,200 220,240" fill="#f44771" stroke="#222" stroke-width="12" stroke-linejoin="round"/>
+  <!-- Ribbon right notch -->
+  <polygon points="256,200 316,200 292,240" fill="#e5325a" stroke="#222" stroke-width="12" stroke-linejoin="round"/>
+
+  <!-- Outer wavy medal ring -->
+  <circle cx="256" cy="340" r="155" fill="#ffd55a" stroke="#222" stroke-width="18"/>
+  <!-- Wavy bumps around ring (using path) -->
+  <path d="M256,186 C263,172 277,168 284,178 C291,168 305,168 310,180 C320,174 334,178 335,192 C347,190 357,200 353,212 C365,214 370,226 363,235 C374,241 374,255 363,259 C371,270 367,284 356,286 C360,299 352,311 340,309 C340,323 329,332 317,328 C313,341 299,347 288,341 C281,352 267,352 260,341 C249,347 235,341 231,328 C219,332 208,323 208,309 C196,311 188,299 192,286 C181,284 177,270 185,259 C174,255 174,241 185,235 C178,226 183,214 195,212 C191,200 201,190 213,192 C214,178 228,174 235,180 C240,168 254,172 256,186Z" fill="#ffe07a" stroke="#222" stroke-width="10"/>
+
+  <!-- Inner circle -->
+  <circle cx="256" cy="340" r="105" fill="#f5a623" stroke="#222" stroke-width="14"/>
+
+  <!-- Heart -->
+  <path d="M256,400 C256,400 190,358 190,315 C190,295 205,278 226,278 C238,278 249,285 256,295 C263,285 274,278 286,278 C307,278 322,295 322,315 C322,358 256,400 256,400Z" fill="#f44771" stroke="#222" stroke-width="12" stroke-linejoin="round"/>
+  <!-- Heart highlight -->
+  <path d="M220,295 C215,302 213,311 215,320" fill="none" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.6"/>
+</svg>

@@ -1,4 +1,4 @@
-import { Edges, Text, TextProps } from "@react-three/drei";
+import { Edges, Svg, Text, TextProps } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import gsap from "gsap";
 import posthog from "posthog-js";
@@ -64,6 +64,11 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
         .to(button.scale, { y: hovered ? 1 : 0, x: hovered ? 1 : 0 }, 0)
         .to(button.position, { z: hovered ? 0.3 : -1 }, 0);
     }
+
+    if (project.favourite) {
+      const medal = projectRef.current.children[projectRef.current.children.length - 1];
+      hoverAnimRef.current.to(medal.position, { y: hovered ? 2.95 : 1 }, 0);
+    }
   }, [hovered]);
 
   useEffect(() => {
@@ -113,7 +118,7 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
           maxWidth={4}
           whiteSpace="nowrap"
           fontSize={0.8}>
-          {project.title.length > 14 ? project.title.slice(0, 13) + '…' : project.title}
+          {project.title.length > 11 ? project.title.slice(0, 10).trimEnd() + '…' : project.title}
         </Text>
         <group position={[-1.25, 1.4, 0.01]}>
           <mesh>
@@ -154,6 +159,11 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
               fontSize={0.25}>
               VIEW ↗
             </Text>
+          </group>
+        )}
+        {project.favourite && (
+          <group position={[1.55, 1, 0.15]}>
+            <Svg src="./icons/medal.svg" scale={0.00095} />
           </group>
         )}
       </group>
