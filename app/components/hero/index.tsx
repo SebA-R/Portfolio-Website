@@ -3,13 +3,15 @@
 import { Text, useProgress, useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import gsap from "gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import StarsContainer from "../models/Stars";
 import WindowModel from "../models/WindowModel";
 import TextWindow from "./TextWindow";
 
 const MIN_SCALE = 0.004;
+const PADDING_X = 0.4;
+const PADDING_Y = 0.4;
 
 const Hero = () => {
   const groupRef = useRef<THREE.Group>(null);
@@ -18,6 +20,7 @@ const Hero = () => {
   const { progress } = useProgress();
   const { viewport } = useThree();
   const data = useScroll();
+  const [textBounds, setTextBounds] = useState<{ w: number; h: number } | null>(null);
 
   useEffect(() => {
     if (progress === 100 && groupRef.current) {
@@ -33,20 +36,34 @@ const Hero = () => {
     rectRef.current.scale.y = THREE.MathUtils.damp(rectRef.current.scale.y, target, 6, delta);
   });
 
-  const baseFontSize = Math.min(1.2, viewport.width * 0.13);
+  const baseFontSize = Math.min(1.2, viewport.width * 0.3);
   const fontSize = Math.max(0.6, baseFontSize);
+  const maxWidth = viewport.width * 0.9;
 
-  const rectWidth = viewport.width * 0.9 + fontSize * 2;
-  const rectHeight = fontSize * 2.2;
+  // Use actual measured text bounds so the rect covers all wrapped lines
+  const rectWidth = (textBounds?.w ?? maxWidth) + PADDING_X * 2;
+  const rectHeight = (textBounds?.h ?? fontSize * 1.4) + PADDING_Y * 2;
 
   return (
     <>
       <group ref={groupRef} position={[0, 2, -10]}>
-        <mesh ref={rectRef} position={[0, 0, -0.01]} scale={[1, MIN_SCALE, 1]}>
+        <mesh ref={rectRef} position={[0, 0, -0.001]} scale={[1, MIN_SCALE, 1]}>
           <planeGeometry args={[rectWidth, rectHeight]} />
-          <meshBasicMaterial color="#000000" transparent opacity={0.35} depthWrite={false} />
+          <meshBasicMaterial color="#000000" transparent opacity={0.65} depthWrite={false} />
         </mesh>
-        <Text position={[0, 0, 0]} font="./soria-font.ttf" fontSize={fontSize} maxWidth={viewport.width * 1} color="white" anchorX="center" anchorY="middle">
+        <Text
+          position={[0, 0, 0]}
+          font="./soria-font.ttf"
+          fontSize={fontSize}
+          maxWidth={maxWidth}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+          onSync={(troika: any) => {
+            const b = troika?.textRenderInfo?.blockBounds;
+            if (b) setTextBounds({ w: b[2] - b[0], h: b[3] - b[1] });
+          }}
+        >
           I'm Sebastian Arellano-Rubach
         </Text>
       </group>
