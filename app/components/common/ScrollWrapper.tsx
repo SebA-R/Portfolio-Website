@@ -34,8 +34,8 @@ const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) 
           // Tilt left/right (gamma) → subtle camera pan, same feel as mouse on desktop
           camera.rotation.y = THREE.MathUtils.lerp(
             camera.rotation.y,
-            -(orientation.current.gamma / 90) * (Math.PI / 20),
-            0.05,
+            -(orientation.current.gamma / 90) * (Math.PI / 10),
+            0.07,
           );
         } else {
           // Move camera slightly on mouse movement.
