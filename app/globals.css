@@ -2,7 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Plain @font-face (not next/font) so CSS and the 3D text share one file. */
+@font-face {
+  font-family: "Soria";
+  src: url("/soria-font.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Vercetti";
+  src: url("/Vercetti-Regular.woff") format("woff");
+  font-display: swap;
+}
+
 :root {
+  --font-soria: "Soria", Georgia, serif;
+  --font-vercetti: "Vercetti", Arial, Helvetica, sans-serif;
   --background: #0f172a;
   --foreground: #e2e8f0;
   --muted: #64748b;

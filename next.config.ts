@@ -7,9 +7,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@react-three/drei', 'gsap', 'three'],
   },
-  env: {
-    googleAnalyticsId: process.env.NODE_ENV === "production" ? process.env.GA_MEASUREMENT_ID : "",
-  }
 };
 
 export default nextConfig;

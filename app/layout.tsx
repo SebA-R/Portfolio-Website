@@ -1,18 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
-import localFont from 'next/font/local';
+import { preload } from "react-dom";
 import { PHProvider } from "./components/common/Analytics";
 import "./globals.css";
-
-const soriaFont = localFont({
-  src: "../public/soria-font.woff2",
-  variable: "--font-soria",
-});
-
-const vercettiFont = localFont({
-  src: "../public/Vercetti-Regular.woff",
-  variable: "--font-vercetti",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sebastian.wiki"),
@@ -72,13 +61,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // The same files the 3D text (troika) loads, so each font downloads once.
+  preload("/soria-font.ttf", { as: "font", type: "font/ttf", crossOrigin: "anonymous" });
+  preload("/Vercetti-Regular.woff", { as: "font", type: "font/woff", crossOrigin: "anonymous" });
+
   return (
     <html lang="en" className="overscroll-y-none bg-background" suppressHydrationWarning>
       <body
-        className={`${soriaFont.variable} ${vercettiFont.variable} font-sans antialiased`}
+        className="font-sans antialiased"
       >
-        <link rel="preconnect" href="https://us.i.posthog.com" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://t.sebastian.wiki" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <script
           type="application/ld+json"
@@ -105,18 +97,6 @@ export default function RootLayout({
         <PHProvider>
           {children}
         </PHProvider>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-7WD4HM3XRE"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-7WD4HM3XRE');
-          `}
-        </Script>
       </body>
     </html>
   );
