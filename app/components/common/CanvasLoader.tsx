@@ -1,42 +1,27 @@
 'use client';
 
 import { useGSAP } from "@gsap/react";
-import { AdaptiveDpr, Preload, ScrollControls, useProgress } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
 import gsap from "gsap";
-import { Suspense, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useRef } from "react";
 import { isMobile } from "react-device-detect";
 
+import { useLoadStore } from "@stores";
+
 import BackgroundVideo from "./BackgroundVideo";
-import Preloader from "./Preloader";
+import HeroFallback from "./HeroFallback";
 import ProgressLoader from "./ProgressLoader";
+import SceneErrorBoundary from "./SceneErrorBoundary";
 import ScrollProgressBar from "./ScrollProgressBar";
 import { ScrollHint } from "./ScrollHint";
 import ThemeSwitcher from "./ThemeSwitcher";
 
-const CanvasLoader = (props: { children: React.ReactNode }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const { progress } = useProgress();
-  const [canvasStyle, setCanvasStyle] = useState<React.CSSProperties>({
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    opacity: 0,
-    overflow: "hidden",
-  });
+// three.js, R3F and drei load after the shell has painted.
+const Scene = dynamic(() => import("./Scene"), { ssr: false });
 
-  useEffect(() => {
-    if (!isMobile) {
-      const borderStyle = {
-        inset: '1rem',
-        width: 'calc(100% - 2rem)',
-        height: 'calc(100% - 2rem)',
-      };
-      setCanvasStyle({ ...canvasStyle, ...borderStyle });
-    }
-  }, [isMobile]);
+const CanvasLoader = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const progress = useLoadStore((state) => state.progress);
 
   // Scale the video up so mouse panning never reveals an edge
   useEffect(() => {
@@ -80,23 +65,10 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
           zIndex: 1,
         }} />
         <BackgroundVideo ref={videoRef} start={progress === 100} />
-        <Canvas className="base-canvas" aria-hidden="true"
-          shadows
-          style={canvasStyle}
-          gl={{ alpha: true }}
-          dpr={[1, 2]}>
-          <Suspense fallback={null}>
-            <ambientLight intensity={0.5} />
-
-            <ScrollControls pages={4} damping={0.4} maxSpeed={1} distance={1} style={{ zIndex: 1 }}>
-              {props.children}
-              <Preloader />
-            </ScrollControls>
-
-            <Preload all />
-          </Suspense>
-          <AdaptiveDpr pixelated />
-        </Canvas>
+        <HeroFallback loaded={progress === 100} />
+        <SceneErrorBoundary>
+          <Scene />
+        </SceneErrorBoundary>
         <ProgressLoader progress={progress} />
       </div>
       <ThemeSwitcher />
