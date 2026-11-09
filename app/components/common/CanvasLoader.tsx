@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 
+import BackgroundVideo from "./BackgroundVideo";
 import Preloader from "./Preloader";
 import ProgressLoader from "./ProgressLoader";
 import ScrollProgressBar from "./ScrollProgressBar";
@@ -78,27 +79,7 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
           pointerEvents: 'none',
           zIndex: 1,
         }} />
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-          preload="auto"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-          }}
-        >
-          <source src="stitched6.webm" type="video/webm" />
-          <source src="stitched6-h265.mp4" type='video/mp4; codecs="hvc1"' />
-          <source src="stitched6-compressed.mp4" type="video/mp4" />
-        </video>
+        <BackgroundVideo ref={videoRef} start={progress === 100} />
         <Canvas className="base-canvas" aria-hidden="true"
           shadows
           style={canvasStyle}
