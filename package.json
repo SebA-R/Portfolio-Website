@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "prepare": "husky",
+    "prelint": "npm run encode:video",
     "lint": "next lint",
     "encode:video": "node scripts/encode-video.mjs"
   },

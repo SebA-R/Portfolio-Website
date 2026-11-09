@@ -8,7 +8,7 @@
 
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,11 +19,12 @@ const OUT_DIR = join(root, 'public', 'video');
 const MANIFEST = join(root, 'app', 'generated', 'video-manifest.json');
 const NAME = 'stitched6';
 
-// Phones get 720p; everything wider gets 1080p. Each size is offered as AV1
-// first and H.264 as the fallback for browsers without AV1 decoding.
+// Phones get 720p; everything wider gets 1080p. Phones get H.264 first: many
+// lack hardware AV1 decoding and would decode it in software while WebGL is
+// also running. Wider screens get AV1 first, with H.264 as the fallback.
 const RENDITIONS = [
-  { id: 'av1-720', height: 720, codec: 'av1', media: '(max-width: 768px)' },
   { id: 'h264-720', height: 720, codec: 'h264', media: '(max-width: 768px)' },
+  { id: 'av1-720', height: 720, codec: 'av1', media: '(max-width: 768px)' },
   { id: 'av1-1080', height: 1080, codec: 'av1', media: null },
   { id: 'h264-1080', height: 1080, codec: 'h264', media: null },
 ];
@@ -78,7 +79,13 @@ function probeLevel(file) {
     ffprobe = sibling;
   }
   const out = run(ffprobe, ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=level', '-of', 'csv=p=0', file]);
-  return Number.parseInt(out.trim(), 10);
+  const level = Number.parseInt(out.trim(), 10);
+  // ffprobe reports -99 (or nothing) when the level is unknown; a bad codecs
+  // string would make browsers skip the source.
+  if (!Number.isInteger(level) || level <= 0) {
+    throw new Error(`encode-video: could not read the codec level of ${file} (got "${out.trim()}").`);
+  }
+  return level;
 }
 
 function codecsString(codec, level) {
@@ -99,13 +106,34 @@ function encodeRendition(rendition, outFile) {
     '-pix_fmt', 'yuv420p',
     // Index at the front so playback starts before the download finishes.
     '-movflags', '+faststart',
-    outFile,
+    partialPath(outFile),
   ];
   run(ffmpeg, args);
+  renameSync(partialPath(outFile), outFile);
 }
 
 function encodePoster(outFile) {
-  run(ffmpeg, ['-y', '-v', 'error', '-i', SOURCE, '-frames:v', '1', '-vf', 'scale=1280:-2', '-c:v', 'libwebp', '-quality', '60', outFile]);
+  run(ffmpeg, ['-y', '-v', 'error', '-i', SOURCE, '-frames:v', '1', '-vf', 'scale=1280:-2', '-c:v', 'libwebp', '-quality', '60', partialPath(outFile)]);
+  renameSync(partialPath(outFile), outFile);
+}
+
+// ffmpeg writes here first and the file is renamed only once it succeeds, so
+// an interrupted encode never leaves a truncated file under the final name.
+// Leftover partial files are removed by the cleanup in main().
+function partialPath(file) {
+  const dot = file.lastIndexOf('.');
+  return `${file.slice(0, dot)}.partial${file.slice(dot)}`;
+}
+
+function readManifest() {
+  if (!existsSync(MANIFEST)) {
+    return null;
+  }
+  try {
+    return JSON.parse(readFileSync(MANIFEST, 'utf8'));
+  } catch {
+    return null;
+  }
 }
 
 function main() {
@@ -131,9 +159,14 @@ function main() {
   }
 
   const missing = [...wanted].filter((f) => !existsSync(join(OUT_DIR, f)));
-  if (missing.length > 0) {
-    checkEncoders();
+  // Up to date: reuse the manifest (and its codecs strings) without running
+  // ffmpeg or ffprobe at all.
+  const previous = readManifest();
+  if (missing.length === 0 && previous && previous.hash === hash) {
+    console.log('encode-video: up to date');
+    return;
   }
+  checkEncoders();
 
   const sources = [];
   for (const r of RENDITIONS) {
@@ -161,11 +194,8 @@ function main() {
     }
   }
 
-  const manifest = { poster: `/video/${posterFile}`, sources };
+  const manifest = { hash, poster: `/video/${posterFile}`, sources };
   writeFileSync(MANIFEST, `${JSON.stringify(manifest, null, 2)}\n`);
-  if (missing.length === 0) {
-    console.log('encode-video: up to date');
-  }
 }
 
 main();
