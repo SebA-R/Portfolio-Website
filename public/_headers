@@ -16,11 +16,9 @@
 /models/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
 
-# Video files - large, rarely change
-/*.webm
-  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
-/*.mp4
-  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+# Background video and poster - content-hashed by scripts/encode-video.mjs
+/video/*
+  Cache-Control: public, max-age=31536000, immutable
 
 # Fonts
 /*.woff2

@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "predev": "npm run encode:video",
+    "prebuild": "npm run encode:video",
     "build": "next build",
     "start": "next start",
     "prepare": "husky",
-    "lint": "next lint"
+    "lint": "next lint",
+    "encode:video": "node scripts/encode-video.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

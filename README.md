@@ -16,6 +16,10 @@ npm install && npm run dev
 npm run build && wrangler pages deploy out --project-name sebastian-wiki
 ```
 
+## Background video
+
+The one stored source is `media/stitched6.webm`. `npm run dev` and `npm run build` first run `scripts/encode-video.mjs`, which writes AV1 and H.264 renditions (720p for phones, 1080p otherwise) and a poster into the gitignored `public/video/`, with content-hashed names. It needs ffmpeg with libsvtav1, libx264 and libwebp (`FFMPEG_PATH` overrides). It only re-encodes when the source or the script changes.
+
 ## Adding 3D models
 
 ```bash
