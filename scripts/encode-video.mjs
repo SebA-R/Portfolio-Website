@@ -119,10 +119,12 @@ function encodePoster(outFile) {
 
 // ffmpeg writes here first and the file is renamed only once it succeeds, so
 // an interrupted encode never leaves a truncated file under the final name.
-// Leftover partial files are removed by the cleanup in main().
+// The pid keeps a run from sharing a temp file with an ffmpeg orphaned by an
+// earlier, interrupted run. Leftover partial files are removed by the cleanup
+// in main().
 function partialPath(file) {
   const dot = file.lastIndexOf('.');
-  return `${file.slice(0, dot)}.partial${file.slice(dot)}`;
+  return `${file.slice(0, dot)}.partial-${process.pid}${file.slice(dot)}`;
 }
 
 function readManifest() {
