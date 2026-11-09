@@ -11,6 +11,7 @@ import { useLoadStore } from "@stores";
 import BackgroundVideo from "./BackgroundVideo";
 import HeroFallback from "./HeroFallback";
 import ProgressLoader from "./ProgressLoader";
+import SceneErrorBoundary from "./SceneErrorBoundary";
 import ScrollProgressBar from "./ScrollProgressBar";
 import { ScrollHint } from "./ScrollHint";
 import ThemeSwitcher from "./ThemeSwitcher";
@@ -65,7 +66,9 @@ const CanvasLoader = () => {
         }} />
         <BackgroundVideo ref={videoRef} start={progress === 100} />
         <HeroFallback loaded={progress === 100} />
-        <Scene />
+        <SceneErrorBoundary>
+          <Scene />
+        </SceneErrorBoundary>
         <ProgressLoader progress={progress} />
       </div>
       <ThemeSwitcher />
