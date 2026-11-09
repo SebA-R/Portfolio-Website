@@ -20,14 +20,12 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
         web_vitals: true,
         network_timing: true,
       },
+      // No canvas capture: snapshotting the WebGL canvas costs CPU on every
+      // frame it records. Recordings still show the DOM.
       session_recording: {
         maskAllInputs: false,
-        captureCanvas: {
-          recordCanvas: true,
-          canvasFps: 4,
-          canvasQuality: 'low',
-        },
       },
+      disable_surveys: true,
       loaded: (ph) => {
         if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
       },
